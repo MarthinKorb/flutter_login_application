@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import 'create_account.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
           content: Text('Erro ao fazer o login.'),
           actions: [
             FlatButton(
-              color: Colors.deepPurple,
+              color: Colors.deepPurple[300],
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -72,31 +73,34 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.deepPurple[200],
-              Colors.deepPurple,
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+      body: Center(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.deepPurple[500],
+                Colors.deepPurple[800],
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
-        ),
-        child: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.white10,
+          child: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.white10,
+                  ),
+                )
+              : ListView(
+                  children: [
+                    headerSection(),
+                    textSection(),
+                    buttonSection(),
+                    forgetPasswordSection(),
+                    createAccountSection(),
+                  ],
                 ),
-              )
-            : ListView(
-                children: [
-                  headerSection(),
-                  textSection(),
-                  buttonSection(),
-                  createAccountSection(),
-                ],
-              ),
+        ),
       ),
     );
   }
@@ -129,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
             key: _formKey,
             child: Column(
               children: [
-                txtEmail('Email', Icons.email_outlined),
+                inputForm('Email', Icons.email_outlined, emailController),
                 SizedBox(height: 30),
                 txtPassword('Password', Icons.lock_outline),
               ],
@@ -137,6 +141,34 @@ class _LoginPageState extends State<LoginPage> {
           )
         ],
       ),
+    );
+  }
+
+  TextFormField inputForm(String title, IconData icon, controller) {
+    return TextFormField(
+      textInputAction: TextInputAction.next,
+      controller: controller,
+      style: TextStyle(color: Colors.white54),
+      decoration: InputDecoration(
+        hintText: title,
+        hintStyle: TextStyle(
+          color: Colors.deepPurple[300],
+        ),
+        icon: Icon(
+          icon,
+          color: Colors.deepPurple[300],
+        ),
+        border: const OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+        ),
+      ),
+      keyboardType: TextInputType.emailAddress,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Preencha o campo de $title';
+        }
+        return null;
+      },
     );
   }
 
@@ -148,12 +180,13 @@ class _LoginPageState extends State<LoginPage> {
       decoration: InputDecoration(
         hintText: title,
         hintStyle: TextStyle(
-          color: Colors.white70,
+          color: Colors.deepPurple[300],
         ),
         icon: Icon(
           icon,
-          color: Colors.deepPurple,
+          color: Colors.deepPurple[300],
         ),
+        border: const OutlineInputBorder(),
       ),
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
@@ -176,18 +209,19 @@ class _LoginPageState extends State<LoginPage> {
       textInputAction: TextInputAction.next,
       obscureText: _obscureText,
       controller: passwordController,
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Colors.deepPurple[300]),
       decoration: InputDecoration(
         icon: Icon(
           icon,
-          color: Colors.deepPurple,
+          color: Colors.deepPurple[300],
         ),
+        border: const OutlineInputBorder(),
         hintText: 'Password',
-        hintStyle: TextStyle(color: Colors.white70),
+        hintStyle: TextStyle(color: Colors.deepPurple[300]),
         suffixIcon: IconButton(
           icon: Icon(
             Icons.remove_red_eye,
-            color: Colors.deepPurple,
+            color: Colors.deepPurple[300],
           ),
           onPressed: () {
             toggleObscureText();
@@ -207,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
   Container buttonSection() {
     return Container(
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         margin: EdgeInsets.only(top: 30),
         child: RaisedButton(
           splashColor: Colors.purple,
@@ -234,6 +268,40 @@ class _LoginPageState extends State<LoginPage> {
             }
           },
         ));
+  }
+
+  Container forgetPasswordSection() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      margin: EdgeInsets.only(bottom: 20, top: 0),
+      alignment: Alignment.bottomRight,
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        children: [
+          InkWell(
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: Text(
+                  'Forgot password?',
+                  style: TextStyle(
+                    color: Colors.white70,
+                  ),
+                ),
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => HomePage()),
+                  (route) => false);
+            },
+          )
+        ],
+      ),
+    );
   }
 
   Container createAccountSection() {
@@ -270,7 +338,7 @@ class _LoginPageState extends State<LoginPage> {
             onTap: () {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                      builder: (BuildContext context) => MyHomePage()),
+                      builder: (BuildContext context) => CreateAccount()),
                   (route) => false);
             },
           )
