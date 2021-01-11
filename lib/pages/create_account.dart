@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_application/components/alert_dialog_comp.dart';
 import 'package:flutter_login_application/pages/login_page.dart';
+import 'package:flutter_login_application/utils/constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -24,15 +26,13 @@ class _CreateAccountState extends State<CreateAccount> {
 
     var body = jsonEncode(data);
     print(body);
-    var jsonData;
     var response = await http.post(
-      'http://localhost:3333/users',
+      Constants.HOST + '/users',
       body: body,
-      headers: {"Content-Type": "application/json"},
+      headers: Constants.CONTENT_TYPE,
     );
 
     if (response.statusCode == 201) {
-      jsonData = jsonDecode(response.body);
       setState(() {
         _isLoading = false;
 
@@ -82,19 +82,8 @@ class _CreateAccountState extends State<CreateAccount> {
 
       showDialog(
         context: context,
-        child: AlertDialog(
-          title: Text('Alert'),
-          content: Text('Erro ao fazer o cadastro.'),
-          actions: [
-            FlatButton(
-              color: Colors.deepPurple,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Ok'),
-            ),
-          ],
-        ),
+        child: AlertDialogComp(
+            title: 'Alerta', contentText: 'Erro ao fazer o cadastro.'),
       );
     }
   }

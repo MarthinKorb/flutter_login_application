@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_application/components/alert_dialog_comp.dart';
+import 'package:flutter_login_application/services/user_services.dart';
+import 'package:flutter_login_application/utils/constants.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import 'create_account.dart';
-import 'home_page.dart';
+import 'user_pages/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,6 +19,8 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   bool _obscureText = true;
 
+  var userService = UserServices();
+
   signIn(String email, String password) async {
     Map data = {
       "email": email,
@@ -25,11 +30,13 @@ class _LoginPageState extends State<LoginPage> {
     var body = jsonEncode(data);
     var jsonData;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var response = await http.post(
-      'http://localhost:3333/login',
-      body: body,
-      headers: {"Content-Type": "application/json"},
+
+    var response = await userService.post(
+      Constants.HOST + '/login',
+      body,
+      Constants.CONTENT_TYPE,
     );
+
     if (response.statusCode == 200) {
       jsonData = jsonDecode(response.body);
       setState(() {
@@ -46,21 +53,11 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       showDialog(
-        context: context,
-        child: AlertDialog(
-          title: Text('Alert'),
-          content: Text('Erro ao fazer o login.'),
-          actions: [
-            FlatButton(
-              color: Colors.deepPurple[300],
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Ok'),
-            ),
-          ],
-        ),
-      );
+          context: context,
+          child: AlertDialogComp(
+            title: 'Alerta',
+            contentText: 'Erro ao fazer login',
+          ));
     }
   }
 
