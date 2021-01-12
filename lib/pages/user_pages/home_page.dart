@@ -11,7 +11,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   SharedPreferences sharedPreferences;
-  // int _selectedIndex = 0;
   int _currentIndex = 0;
   @override
   void initState() {

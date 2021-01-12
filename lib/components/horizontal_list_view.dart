@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_application/components/alert_dialog_comp.dart';
 
 class HorizontalListView extends StatelessWidget {
   @override
@@ -21,7 +22,7 @@ class HorizontalListView extends StatelessWidget {
         height: 100.0,
         child: ListView(
           scrollDirection: Axis.horizontal,
-          children: <Widget>[
+          children: [
             Container(
               width: 170.0,
               child: Card(
@@ -34,7 +35,20 @@ class HorizontalListView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        child: AlertDialogComp(
+                          title: 'Teste',
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('Teste de Widget'),
+                              Text('Teste de Widget')
+                            ],
+                          ),
+                        ));
+                  },
                 ),
                 color: Colors.deepPurple,
               ),

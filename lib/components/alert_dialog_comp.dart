@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 class AlertDialogComp extends StatelessWidget {
   final String title;
-  final String contentText;
+  final Widget child;
 
-  AlertDialogComp({this.title, this.contentText});
+  AlertDialogComp({this.title, this.child});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: AlertDialog(
         title: Text(title),
-        content: Text(contentText),
+        content: child,
         actions: [
           FlatButton(
             color: Colors.deepPurple[300],

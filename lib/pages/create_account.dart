@@ -83,7 +83,7 @@ class _CreateAccountState extends State<CreateAccount> {
       showDialog(
         context: context,
         child: AlertDialogComp(
-            title: 'Alerta', contentText: 'Erro ao fazer o cadastro.'),
+            title: 'Alerta', child: Text('Erro ao fazer o cadastro.')),
       );
     }
   }

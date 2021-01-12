@@ -56,13 +56,13 @@ class _LoginPageState extends State<LoginPage> {
           context: context,
           child: AlertDialogComp(
             title: 'Alerta',
-            contentText: 'Erro ao fazer login',
+            child: Text('Erro ao fazer login'),
           ));
     }
   }
 
   Future<dynamic> take() async {
-    var response = await http.get('http://localhost:3333/users');
+    var response = await http.get(Constants.HOST + '/users');
     print(response.body);
     return jsonDecode(response.body);
   }
