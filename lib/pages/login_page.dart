@@ -4,7 +4,6 @@ import 'package:flutter_login_application/services/user_services.dart';
 import 'package:flutter_login_application/utils/constants.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 import 'create_account.dart';
 import 'user_pages/home_page.dart';
@@ -41,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
       jsonData = jsonDecode(response.body);
       setState(() {
         _isLoading = false;
+        sharedPreferences.setString('id', jsonData['user']['id']);
         sharedPreferences.setString('token', jsonData['token']);
 
         Navigator.of(context).pushAndRemoveUntil(
@@ -53,18 +53,13 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       showDialog(
-          context: context,
-          child: AlertDialogComp(
-            title: 'Alerta',
-            child: Text('Erro ao fazer login'),
-          ));
+        context: context,
+        child: AlertDialogComp(
+          title: 'Alerta',
+          child: Text('Erro ao fazer login'),
+        ),
+      );
     }
-  }
-
-  Future<dynamic> take() async {
-    var response = await http.get(Constants.HOST + '/users');
-    print(response.body);
-    return jsonDecode(response.body);
   }
 
   @override
@@ -94,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                     textSection(),
                     buttonSection(),
                     forgetPasswordSection(),
-                    createAccountSection(),
+                    createAccountSection()
                   ],
                 ),
         ),
@@ -107,13 +102,16 @@ class _LoginPageState extends State<LoginPage> {
 
   Container headerSection() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      margin: EdgeInsets.only(top: 40),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       child: Center(
         child: Text(
-          'Login',
+          'Shopping List dos Guri',
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white70,
-            fontSize: 50,
+            fontSize: 40,
+            textBaseline: TextBaseline.alphabetic,
           ),
         ),
       ),

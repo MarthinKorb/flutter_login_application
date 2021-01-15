@@ -14,6 +14,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
         accentColor: Colors.blueGrey[50],
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        bottomAppBarColor: Colors.deepPurple[50],
+        cardColor: Colors.deepPurple[100],
       ),
       darkTheme: ThemeData(),
       home: LoginPage(),

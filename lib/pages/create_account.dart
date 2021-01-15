@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:flutter_login_application/components/alert_dialog_comp.dart';
 import 'package:flutter_login_application/pages/login_page.dart';
 import 'package:flutter_login_application/utils/constants.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class CreateAccount extends StatefulWidget {
