@@ -54,6 +54,10 @@ class _ProductFormState extends State<ProductForm> {
                   icon: Icons.description,
                   controller: descriptionController,
                   keyboardType: TextInputType.text,
+                  textColor: ThemeColor.canvasColor[200],
+                  hintColor: ThemeColor.primaryColor,
+                  iconColor: ThemeColor.canvasColor[200],
+                  isPasswordType: false,
                 ),
                 SizedBox(height: 20),
                 Row(
