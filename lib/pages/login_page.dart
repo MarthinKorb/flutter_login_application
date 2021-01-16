@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login_application/components/alert_dialog_comp.dart';
+import 'package:flutter_login_application/components/inputForm.dart';
 import 'package:flutter_login_application/services/user_services.dart';
 import 'package:flutter_login_application/utils/constants.dart';
+import 'package:flutter_login_application/utils/theme_color.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -57,6 +59,8 @@ class _LoginPageState extends State<LoginPage> {
         child: AlertDialogComp(
           title: 'Alerta',
           child: Text('Erro ao fazer login'),
+          icon: Icons.warning_outlined,
+          iconColor: ThemeColor.warningColor,
         ),
       );
     }
@@ -65,53 +69,46 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.deepPurple[500],
-                Colors.deepPurple[800],
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+      backgroundColor: ThemeColor.canvasColor[700],
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.white10,
+              ),
+            )
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  headerSection(),
+                  textSection(),
+                  buttonSection(),
+                  forgetPasswordSection(),
+                  createAccountSection()
+                ],
+              ),
             ),
-          ),
-          child: _isLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.white10,
-                  ),
-                )
-              : ListView(
-                  children: [
-                    headerSection(),
-                    textSection(),
-                    buttonSection(),
-                    forgetPasswordSection(),
-                    createAccountSection()
-                  ],
-                ),
-        ),
-      ),
     );
   }
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Container headerSection() {
-    return Container(
-      margin: EdgeInsets.only(top: 40),
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Center(
-        child: Text(
-          'Shopping List dos Guri',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white70,
-            fontSize: 40,
-            textBaseline: TextBaseline.alphabetic,
+  FittedBox headerSection() {
+    return FittedBox(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Center(
+          child: Text(
+            '!Shopping List',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: ThemeColor.canvasColor[500],
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              textBaseline: TextBaseline.alphabetic,
+            ),
           ),
         ),
       ),
@@ -121,16 +118,32 @@ class _LoginPageState extends State<LoginPage> {
   Container textSection() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-      margin: EdgeInsets.only(top: 30),
+      margin: EdgeInsets.only(top: 20),
       child: Column(
         children: [
           Form(
             key: _formKey,
             child: Column(
               children: [
-                inputForm('Email', Icons.email_outlined, emailController),
+                InputForm(
+                  title: 'Email',
+                  icon: Icons.email_outlined,
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  textColor: ThemeColor.canvasColor[200],
+                  hintColor: ThemeColor.primaryColor,
+                  iconColor: ThemeColor.canvasColor[200],
+                ),
                 SizedBox(height: 30),
-                txtPassword('Password', Icons.lock_outline),
+                txtPassword(
+                  title: 'Password',
+                  icon: Icons.lock_outline,
+                  controller: passwordController,
+                  keyboardType: TextInputType.multiline,
+                  textColor: ThemeColor.canvasColor[200],
+                  hintColor: ThemeColor.primaryColor,
+                  iconColor: ThemeColor.canvasColor[200],
+                ),
               ],
             ),
           )
@@ -139,61 +152,15 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  TextFormField inputForm(String title, IconData icon, controller) {
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      controller: controller,
-      style: TextStyle(color: Colors.white54),
-      decoration: InputDecoration(
-        hintText: title,
-        hintStyle: TextStyle(
-          color: Colors.deepPurple[300],
-        ),
-        icon: Icon(
-          icon,
-          color: Colors.deepPurple[300],
-        ),
-        border: const OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-        ),
-      ),
-      keyboardType: TextInputType.emailAddress,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Preencha o campo de $title';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField txtEmail(String title, IconData icon) {
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      controller: emailController,
-      style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        hintText: title,
-        hintStyle: TextStyle(
-          color: Colors.deepPurple[300],
-        ),
-        icon: Icon(
-          icon,
-          color: Colors.deepPurple[300],
-        ),
-        border: const OutlineInputBorder(),
-      ),
-      keyboardType: TextInputType.emailAddress,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Preencha o campo de email.';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField txtPassword(String title, IconData icon) {
+  TextFormField txtPassword({
+    String title,
+    IconData icon,
+    controller,
+    TextInputType keyboardType,
+    Color textColor,
+    Color hintColor,
+    Color iconColor,
+  }) {
     void toggleObscureText() {
       setState(() {
         _obscureText = !_obscureText;
@@ -203,27 +170,27 @@ class _LoginPageState extends State<LoginPage> {
     return TextFormField(
       textInputAction: TextInputAction.next,
       obscureText: _obscureText,
-      controller: passwordController,
-      style: TextStyle(color: Colors.deepPurple[300]),
+      controller: controller,
+      style: TextStyle(color: textColor),
       decoration: InputDecoration(
         icon: Icon(
           icon,
-          color: Colors.deepPurple[300],
+          color: iconColor,
         ),
         border: const OutlineInputBorder(),
         hintText: 'Password',
-        hintStyle: TextStyle(color: Colors.deepPurple[300]),
+        hintStyle: TextStyle(color: hintColor),
         suffixIcon: IconButton(
           icon: Icon(
             Icons.remove_red_eye,
-            color: Colors.deepPurple[300],
+            color: hintColor,
           ),
           onPressed: () {
             toggleObscureText();
           },
         ),
       ),
-      keyboardType: TextInputType.multiline,
+      keyboardType: keyboardType,
       validator: (value) {
         if (value.isEmpty) {
           return 'Preencha o campo de senha.';
@@ -239,15 +206,29 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.symmetric(horizontal: 20),
         margin: EdgeInsets.only(top: 30),
         child: RaisedButton(
-          splashColor: Colors.purple,
-          child: Text(
-            'Sign In',
-            style: TextStyle(
-              color: Colors.white70,
-            ),
+          splashColor: ThemeColor.secundaryColor,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Icon(
+                  Icons.login,
+                  color: ThemeColor.secundaryColor,
+                ),
+              ),
+              Text(
+                'Entrar',
+                style: TextStyle(
+                  color: ThemeColor.secundaryColor,
+                  fontSize: 16,
+                ),
+              ),
+            ],
           ),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          color: Colors.deepPurple,
+          color: ThemeColor.primaryColor,
           onPressed: () async {
             if (_formKey.currentState.validate()) {
               setState(() {
@@ -280,9 +261,9 @@ class _LoginPageState extends State<LoginPage> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 4),
                 child: Text(
-                  'Forgot password?',
+                  'Esqueceu a senha?',
                   style: TextStyle(
-                    color: Colors.white70,
+                    color: ThemeColor.secundaryColor,
                   ),
                 ),
               ),
@@ -309,23 +290,23 @@ class _LoginPageState extends State<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.baseline,
         children: [
           Text(
-            "Don't have account? ",
-            style: TextStyle(color: Colors.white70),
+            "Ainda não tem conta? ",
+            style: TextStyle(color: ThemeColor.secundaryColor),
           ),
           InkWell(
             child: Container(
               // color: Colors.white70,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.deepPurple[300],
+                color: ThemeColor.primaryColor,
               ),
               child: Padding(
                 padding:
                     const EdgeInsets.only(top: 2, bottom: 2, left: 8, right: 8),
                 child: Text(
-                  'Create a new account',
+                  'Clique aqui e crie sua conta',
                   style: TextStyle(
-                    color: Colors.white70,
+                    color: ThemeColor.secundaryColor,
                   ),
                 ),
               ),

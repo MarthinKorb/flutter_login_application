@@ -4,34 +4,63 @@ class InputForm extends StatelessWidget {
   final String title;
   final IconData icon;
   final TextEditingController controller;
+  final TextInputType keyboardType;
+  final dynamic textColor;
+  final Color hintColor;
+  final Color iconColor;
 
-  InputForm(this.title, this.icon, this.controller);
+  InputForm({
+    this.title,
+    this.icon,
+    this.controller,
+    this.keyboardType,
+    this.textColor,
+    this.hintColor,
+    this.iconColor,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: inputForm(title, icon, controller),
+      child: inputForm(
+        title: title,
+        icon: icon,
+        controller: controller,
+        keyboardType: keyboardType,
+        textColor: textColor,
+        hintColor: hintColor,
+        iconColor: iconColor,
+      ),
     );
   }
 
-  TextFormField inputForm(String title, IconData icon, controller) {
+  TextFormField inputForm({
+    String title,
+    IconData icon,
+    controller,
+    TextInputType keyboardType,
+    Color textColor,
+    Color hintColor,
+    Color iconColor,
+  }) {
     return TextFormField(
       textInputAction: TextInputAction.next,
       controller: controller,
-      style: TextStyle(color: Colors.deepPurple[500]),
+      style: TextStyle(color: textColor),
       decoration: InputDecoration(
         hintText: title,
         hintStyle: TextStyle(
-          color: Colors.deepPurple[300],
+          color: hintColor,
         ),
         icon: Icon(
           icon,
-          color: Colors.deepPurple[300],
+          color: iconColor,
         ),
         border: const OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(5)),
         ),
       ),
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: keyboardType,
       validator: (value) {
         if (value.isEmpty) {
           return 'Preencha o campo de $title';

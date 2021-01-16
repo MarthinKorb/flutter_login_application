@@ -3,6 +3,7 @@ import 'package:flutter_login_application/components/horizontal_list_view.dart';
 import 'package:flutter_login_application/components/products_list.dart';
 import 'package:flutter_login_application/pages/user_pages/product_form.dart';
 import 'package:flutter_login_application/services/product_service.dart';
+import 'package:flutter_login_application/utils/theme_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../login_page.dart';
@@ -42,7 +43,10 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rancho dos Guri'),
+        title: Text(
+          'Rancho dos Guri',
+          style: TextStyle(color: ThemeColor.headers),
+        ),
         actions: [
           FlatButton(
             onPressed: () {
@@ -52,7 +56,7 @@ class _HomePageState extends State<HomePage> {
             },
             child: Icon(
               Icons.logout,
-              color: Colors.white70,
+              color: ThemeColor.headers,
             ),
           ),
         ],
@@ -61,20 +65,28 @@ class _HomePageState extends State<HomePage> {
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
         backgroundColor: Theme.of(context).bottomAppBarColor,
+        unselectedIconTheme: IconThemeData(color: ThemeColor.unselectedIcons),
+        unselectedItemColor: ThemeColor.unselectedIcons,
+        selectedFontSize: 14,
+        fixedColor: ThemeColor.primaryColor,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
+            icon: Icon(
+              Icons.home,
+            ),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt),
+            icon: Icon(
+              Icons.list_alt,
+            ),
             label: "Ver Produtos",
-            backgroundColor: Colors.deepPurple,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_to_photos),
+            icon: Icon(
+              Icons.add_to_photos,
+            ),
             label: "Cadastrar",
-            backgroundColor: Colors.deepPurple,
           ),
         ],
       ),

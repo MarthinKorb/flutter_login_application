@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login_application/components/inputForm.dart';
 import 'package:flutter_login_application/services/product_service.dart';
 import 'package:flutter_login_application/utils/constants.dart';
+import 'package:flutter_login_application/utils/theme_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductForm extends StatefulWidget {
@@ -49,9 +50,10 @@ class _ProductFormState extends State<ProductForm> {
             child: Column(
               children: [
                 InputForm(
-                  'Descrição',
-                  Icons.description,
-                  descriptionController,
+                  title: 'Descrição',
+                  icon: Icons.description,
+                  controller: descriptionController,
+                  keyboardType: TextInputType.text,
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -66,7 +68,7 @@ class _ProductFormState extends State<ProductForm> {
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                         elevation: 10,
-                        color: Theme.of(context).primaryColor,
+                        color: ThemeColor.buttonColor[400],
                         onPressed: () async {
                           final description = descriptionController.text;
 
@@ -101,11 +103,8 @@ class _ProductFormState extends State<ProductForm> {
                             );
                           }
                         },
-                        textColor: Theme.of(context).accentColor,
-                        child: Text(
-                          'Salvar',
-                          style: TextStyle(),
-                        ),
+                        textColor: ThemeColor.secundaryColor,
+                        child: Text('Salvar'),
                       ),
                     ),
                   ],
