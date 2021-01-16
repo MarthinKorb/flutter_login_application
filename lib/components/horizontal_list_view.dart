@@ -25,31 +25,32 @@ class HorizontalListView extends StatelessWidget {
               ),
               width: 170.0,
               child: Card(
+                color: ThemeColor.canvasColor[400],
                 child: ListTile(
                   title: Center(
                     child: Text(
                       'Ver minhas listas',
                       style: TextStyle(
-                        color: ThemeColor.buttonColor,
+                        color: ThemeColor.secundaryColor,
                       ),
                     ),
                   ),
                   onTap: () {
                     showDialog(
-                        context: context,
-                        child: AlertDialogComp(
-                          title: 'Teste',
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('Teste de Widget'),
-                              Text('Teste de Widget')
-                            ],
-                          ),
-                        ));
+                      context: context,
+                      child: AlertDialogComp(
+                        title: 'Teste',
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Teste de Widget'),
+                            Text('Teste de Widget')
+                          ],
+                        ),
+                      ),
+                    );
                   },
                 ),
-                color: ThemeColor.secundaryColor,
               ),
             ),
             Container(

@@ -15,4 +15,8 @@ class ThemeColor {
   static const MaterialColor cardColor = Colors.lightBlue;
 
   static const MaterialColor warningColor = Colors.amber;
+  static const MaterialColor successColor = Colors.green;
+  static const MaterialColor errorColor = Colors.red;
+
+  static const MaterialColor containerColor = Colors.deepPurple;
 }

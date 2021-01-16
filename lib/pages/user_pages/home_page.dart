@@ -43,10 +43,19 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: Expanded(
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Icon(Icons.person)],
+            ),
+          ),
+        ),
         title: Text(
           'Rancho dos Guri',
-          style: TextStyle(color: ThemeColor.headers),
+          style: TextStyle(color: ThemeColor.secundaryColor),
         ),
+        centerTitle: true,
         actions: [
           FlatButton(
             onPressed: () {

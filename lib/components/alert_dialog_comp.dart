@@ -23,7 +23,7 @@ class AlertDialogComp extends StatelessWidget {
                 color: iconColor,
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top: 8.0),
                 child: Text(title),
               ),
             ],
@@ -34,10 +34,13 @@ class AlertDialogComp extends StatelessWidget {
           FlatButton(
             color: ThemeColor.buttonColor,
             onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => pageToRedirect),
-                  (route) => false);
+              if (pageToRedirect != null) {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => pageToRedirect),
+                    (route) => false);
+              }
+              Navigator.of(context).pop();
             },
             child: Text('Ok'),
           ),

@@ -1,9 +1,14 @@
 import 'package:flutter_login_application/utils/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_interceptor/http_interceptor.dart';
+
+HttpClientWithInterceptor client;
 
 class ProductService {
-  Future<http.Response> getProducts() async {
-    var response = await http.get(Constants.HOST + '/products');
+  Future<http.Response> getProducts(
+      {dynamic idUser, Map<String, String> headers}) async {
+    var response =
+        await http.get(Constants.HOST + '/products/$idUser', headers: headers);
     return response;
   }
 
@@ -30,8 +35,11 @@ class ProductService {
     return response;
   }
 
-  Future<http.Response> removeProduct(String id) async {
-    return await http.delete(Constants.HOST + '/products/$id',
-        headers: Constants.CONTENT_TYPE);
+  Future<http.Response> removeProduct(
+      {dynamic id, Map<String, String> headers}) async {
+    return await http.delete(
+      Constants.HOST + '/products/$id',
+      headers: headers,
+    );
   }
 }

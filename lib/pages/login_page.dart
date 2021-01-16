@@ -30,10 +30,9 @@ class _LoginPageState extends State<LoginPage> {
     var jsonData;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    var response = await userService.post(
-      Constants.HOST + '/login',
-      body,
-      Constants.CONTENT_TYPE,
+    var response = await userService.login(
+      body: body,
+      headers: Constants.CONTENT_TYPE,
     );
 
     if (response.statusCode == 200) {
@@ -67,11 +66,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeColor.canvasColor[700],
+      // backgroundColor: ThemeColor.canvasColor[50],
+      backgroundColor: Colors.grey[50],
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(
-                backgroundColor: Colors.white10,
+                backgroundColor: ThemeColor.canvasColor[400],
               ),
             )
           : Center(
@@ -128,20 +128,20 @@ class _LoginPageState extends State<LoginPage> {
                   icon: Icons.email_outlined,
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
-                  textColor: ThemeColor.canvasColor[200],
+                  textColor: ThemeColor.canvasColor[500],
                   hintColor: ThemeColor.primaryColor,
-                  iconColor: ThemeColor.canvasColor[200],
+                  iconColor: ThemeColor.canvasColor[500],
                   isPasswordType: false,
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 20),
                 InputForm(
                   title: 'Password',
                   icon: Icons.lock_outline,
                   controller: passwordController,
                   keyboardType: TextInputType.multiline,
-                  textColor: ThemeColor.canvasColor[200],
+                  textColor: ThemeColor.canvasColor[700],
                   hintColor: ThemeColor.primaryColor,
-                  iconColor: ThemeColor.canvasColor[200],
+                  iconColor: ThemeColor.canvasColor[700],
                   suffixIcon: Icons.remove_red_eye_outlined,
                   isPasswordType: true,
                 ),
@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.symmetric(horizontal: 20),
         margin: EdgeInsets.only(top: 30),
         child: RaisedButton(
-          splashColor: ThemeColor.secundaryColor,
+          splashColor: ThemeColor.canvasColor[200],
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -168,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Icon(
                   Icons.login,
-                  color: ThemeColor.secundaryColor,
+                  color: ThemeColor.canvasColor[200],
                 ),
               ),
               Text(
@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          color: ThemeColor.primaryColor,
+          color: ThemeColor.canvasColor[700],
           onPressed: () async {
             if (_formKey.currentState.validate()) {
               setState(() {
@@ -202,9 +202,8 @@ class _LoginPageState extends State<LoginPage> {
   Container forgetPasswordSection() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      margin: EdgeInsets.only(bottom: 20, top: 0),
+      margin: EdgeInsets.only(bottom: 20, top: 20),
       alignment: Alignment.bottomRight,
-      width: MediaQuery.of(context).size.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -216,7 +215,8 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text(
                   'Esqueceu a senha?',
                   style: TextStyle(
-                    color: ThemeColor.secundaryColor,
+                    color: ThemeColor.primaryColor,
+                    fontSize: 16,
                   ),
                 ),
               ),
@@ -235,16 +235,14 @@ class _LoginPageState extends State<LoginPage> {
 
   Container createAccountSection() {
     return Container(
-      alignment: Alignment.bottomRight,
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             "Ainda não tem conta?",
-            style: TextStyle(color: ThemeColor.secundaryColor),
+            style: TextStyle(color: ThemeColor.primaryColor, fontSize: 15),
           ),
           InkWell(
             child: Container(
@@ -255,7 +253,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               child: Padding(
                 padding:
-                    const EdgeInsets.only(top: 2, bottom: 2, left: 8, right: 8),
+                    const EdgeInsets.only(top: 4, bottom: 4, left: 8, right: 8),
                 child: Text(
                   'Clique aqui e crie sua conta',
                   style: TextStyle(

@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '!Shopping List',
       theme: ThemeData(
-        primaryColor: ThemeColor.color[400],
+        primaryColor: ThemeColor.color[700],
         canvasColor: ThemeColor.canvasColor[50],
         accentColor: ThemeColor.secundaryColor,
         bottomAppBarColor: ThemeColor.bottomAppBarColor,
@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(),
       home: HomePage(),
       debugShowCheckedModeBanner: false,
+      locale: const Locale('pt', 'BR'),
     );
   }
 }
