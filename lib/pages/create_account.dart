@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_login_application/components/alert_dialog_comp.dart';
+import 'package:flutter_login_application/components/inputForm.dart';
 import 'package:flutter_login_application/pages/login_page.dart';
 import 'package:flutter_login_application/utils/constants.dart';
+import 'package:flutter_login_application/utils/theme_color.dart';
 import 'package:http/http.dart' as http;
 
 class CreateAccount extends StatefulWidget {
@@ -33,47 +35,29 @@ class _CreateAccountState extends State<CreateAccount> {
     );
 
     if (response.statusCode == 201) {
-      setState(() {
-        _isLoading = false;
-
-        showDialog(
-          context: context,
-          child: AlertDialog(
-            title: Container(
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  ),
-                  Text('Aviso'),
-                ],
-              ),
-            ),
-            content: Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Cadastro realizado com sucesso.'),
-                  SizedBox(height: 20),
-                  Text('Faça o login para acessar o app...'),
-                ],
-              ),
-            ),
-            actions: [
-              FlatButton(
-                color: Colors.deepPurple,
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LoginPage()),
-                      (route) => false);
-                },
-                child: Text('Ok'),
-              ),
+      nameController.clear();
+      emailController.clear();
+      passwordController.clear();
+      passwordConfirmationController.clear();
+      showDialog(
+        context: context,
+        child: AlertDialogComp(
+          icon: Icons.done_all_outlined,
+          iconColor: ThemeColor.successColor,
+          title: 'Aviso',
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Cadastro realizado com sucesso.'),
+              SizedBox(height: 20),
+              Text('Faça o login para acessar o app...'),
             ],
           ),
-        );
+          pageToRedirect: LoginPage(),
+        ),
+      );
+      setState(() {
+        _isLoading = false;
       });
     } else {
       setState(() {
@@ -83,7 +67,11 @@ class _CreateAccountState extends State<CreateAccount> {
       showDialog(
         context: context,
         child: AlertDialogComp(
-            title: 'Alerta', child: Text('Erro ao fazer o cadastro.')),
+          title: 'Alerta',
+          child: Text('Erro ao fazer o cadastro.'),
+          icon: Icons.warning,
+          iconColor: ThemeColor.warningColor,
+        ),
       );
     }
   }
@@ -91,24 +79,21 @@ class _CreateAccountState extends State<CreateAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.deepPurple[500],
-              Colors.deepPurple[800],
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+      backgroundColor: ThemeColor.canvasColor[700],
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(top: 30),
         child: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.white10,
+            ? Container(
+                height: MediaQuery.of(context).size.height,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: ThemeColor.canvasColor[200],
+                  ),
                 ),
               )
-            : ListView(
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   headerSection(),
                   textSection(),
@@ -128,13 +113,15 @@ class _CreateAccountState extends State<CreateAccount> {
 
   Container headerSection() {
     return Container(
-      padding: EdgeInsets.only(top: 30),
+      padding: EdgeInsets.only(top: 120),
       child: Center(
         child: Text(
           'Create Account',
           style: TextStyle(
-            color: Colors.white70,
+            color: ThemeColor.canvasColor[500],
             fontSize: 40,
+            fontWeight: FontWeight.bold,
+            textBaseline: TextBaseline.alphabetic,
           ),
         ),
       ),
@@ -144,117 +131,59 @@ class _CreateAccountState extends State<CreateAccount> {
   Container textSection() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-      margin: EdgeInsets.only(top: 30),
       child: Column(
         children: [
           Form(
             key: _formKey,
             child: Column(
               children: [
-                inputForm('Nome', Icons.person_outline, nameController),
+                InputForm(
+                  title: 'Nome',
+                  icon: Icons.person_outline,
+                  controller: nameController,
+                  textColor: ThemeColor.canvasColor[200],
+                  hintColor: ThemeColor.primaryColor,
+                  iconColor: ThemeColor.canvasColor[200],
+                  isPasswordType: false,
+                ),
                 SizedBox(height: 10),
-                inputForm('Email', Icons.email_outlined, emailController),
+                InputForm(
+                  title: 'Email',
+                  icon: Icons.email_outlined,
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  textColor: ThemeColor.canvasColor[200],
+                  hintColor: ThemeColor.primaryColor,
+                  iconColor: ThemeColor.canvasColor[200],
+                  isPasswordType: false,
+                ),
                 SizedBox(height: 10),
-                inputFormWithObscure(
-                    'Password', Icons.lock_outline, passwordController,
-                    suffixIcon: Icons.remove_red_eye_outlined),
+                InputForm(
+                  title: 'Senha',
+                  icon: Icons.lock_outline,
+                  controller: passwordController,
+                  suffixIcon: Icons.remove_red_eye_outlined,
+                  textColor: ThemeColor.canvasColor[200],
+                  hintColor: ThemeColor.primaryColor,
+                  iconColor: ThemeColor.canvasColor[200],
+                  isPasswordType: true,
+                ),
                 SizedBox(height: 10),
-                inputFormWithObscure('Password confirmation',
-                    Icons.lock_outline, passwordConfirmationController),
+                InputForm(
+                  title: 'Confirmação de senha',
+                  icon: Icons.lock_outline,
+                  controller: passwordConfirmationController,
+                  textColor: ThemeColor.canvasColor[200],
+                  hintColor: ThemeColor.primaryColor,
+                  iconColor: ThemeColor.canvasColor[200],
+                  isPasswordType: true,
+                  suffixIcon: Icons.remove_red_eye_outlined,
+                ),
               ],
             ),
           )
         ],
       ),
-    );
-  }
-
-  TextFormField inputForm(String title, IconData icon, controller,
-      {IconData suffixIcon}) {
-    void toggleObscureText() {
-      setState(() {
-        _obscureText = !_obscureText;
-      });
-    }
-
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      controller: controller,
-      style: TextStyle(color: Colors.white54),
-      decoration: InputDecoration(
-        hintText: title,
-        hintStyle: TextStyle(
-          color: Colors.deepPurple[300],
-        ),
-        icon: Icon(
-          icon,
-          color: Colors.deepPurple[300],
-        ),
-        border: const OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-        ),
-        suffixIcon: IconButton(
-          icon: Icon(
-            suffixIcon,
-            color: Colors.deepPurple[300],
-          ),
-          onPressed: () {
-            toggleObscureText();
-          },
-        ),
-      ),
-      keyboardType: TextInputType.emailAddress,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Preencha o campo de $title';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField inputFormWithObscure(String title, IconData icon, controller,
-      {IconData suffixIcon}) {
-    void toggleObscureText() {
-      setState(() {
-        _obscureText = !_obscureText;
-      });
-    }
-
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      controller: controller,
-      obscureText: _obscureText,
-      style: TextStyle(color: Colors.white54),
-      decoration: InputDecoration(
-        hintText: title,
-        hintStyle: TextStyle(
-          color: Colors.deepPurple[300],
-        ),
-        icon: Icon(
-          icon,
-          color: Colors.deepPurple[300],
-        ),
-        border: const OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-        ),
-        suffixIcon: IconButton(
-          icon: Icon(
-            suffixIcon,
-            color: Colors.deepPurple[300],
-          ),
-          onPressed: () {
-            toggleObscureText();
-          },
-        ),
-      ),
-      keyboardType: TextInputType.emailAddress,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Preencha o campo de $title';
-        }
-        return null;
-      },
     );
   }
 
@@ -284,58 +213,29 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  TextFormField txtPassword(String title, IconData icon) {
-    void toggleObscureText() {
-      setState(() {
-        _obscureText = !_obscureText;
-      });
-    }
-
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      obscureText: _obscureText,
-      controller: passwordController,
-      style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        icon: Icon(
-          icon,
-          color: Colors.deepPurple,
-        ),
-        border: const OutlineInputBorder(),
-        hintText: title,
-        hintStyle: TextStyle(color: Colors.white70),
-        suffixIcon: IconButton(
-          icon: Icon(
-            Icons.remove_red_eye,
-            color: Colors.deepPurple,
-          ),
-          onPressed: () {
-            toggleObscureText();
-          },
-        ),
-      ),
-      keyboardType: TextInputType.multiline,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Preencha o campo de $title.';
-        }
-        return null;
-      },
-    );
-  }
-
   Container buttonSection() {
     return Container(
-        width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(horizontal: 20),
-        margin: EdgeInsets.only(top: 30),
+        margin: EdgeInsets.only(top: 30, bottom: 50),
         child: RaisedButton(
-          splashColor: Colors.purple,
-          child: Text(
-            'Sign Up',
-            style: TextStyle(
-              color: Colors.white70,
-            ),
+          splashColor: ThemeColor.canvasColor[100],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.login,
+                color: ThemeColor.secundaryColor,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text(
+                  'Finalizar Cadastro',
+                  style: TextStyle(
+                    color: ThemeColor.secundaryColor,
+                  ),
+                ),
+              ),
+            ],
           ),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
           color: Colors.deepPurple,
@@ -363,21 +263,21 @@ class _CreateAccountState extends State<CreateAccount> {
 
   Container goBackSection() {
     return Container(
-      height: 50,
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      alignment: Alignment.bottomLeft,
+      padding: EdgeInsets.only(left: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Icon(
             Icons.keyboard_arrow_left_outlined,
-            color: Colors.white70,
+            color: ThemeColor.secundaryColor,
           ),
           InkWell(
             child: Text(
-              'Go back to login',
-              style: TextStyle(color: Colors.white70),
+              'Voltar para login',
+              style: TextStyle(
+                color: ThemeColor.secundaryColor,
+                fontSize: 16,
+              ),
             ),
             onTap: () {
               Navigator.of(context).pushAndRemoveUntil(

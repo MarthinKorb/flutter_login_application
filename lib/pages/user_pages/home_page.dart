@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login_application/components/horizontal_list_view.dart';
-import 'package:flutter_login_application/components/products_list.dart';
+import 'package:flutter_login_application/pages/user_pages/products_list.dart';
 import 'package:flutter_login_application/pages/user_pages/product_form.dart';
 import 'package:flutter_login_application/services/product_service.dart';
 import 'package:flutter_login_application/utils/theme_color.dart';

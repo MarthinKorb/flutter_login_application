@@ -18,8 +18,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  bool _obscureText = true;
-
   var userService = UserServices();
 
   signIn(String email, String password) async {
@@ -133,9 +131,10 @@ class _LoginPageState extends State<LoginPage> {
                   textColor: ThemeColor.canvasColor[200],
                   hintColor: ThemeColor.primaryColor,
                   iconColor: ThemeColor.canvasColor[200],
+                  isPasswordType: false,
                 ),
                 SizedBox(height: 30),
-                txtPassword(
+                InputForm(
                   title: 'Password',
                   icon: Icons.lock_outline,
                   controller: passwordController,
@@ -143,60 +142,14 @@ class _LoginPageState extends State<LoginPage> {
                   textColor: ThemeColor.canvasColor[200],
                   hintColor: ThemeColor.primaryColor,
                   iconColor: ThemeColor.canvasColor[200],
+                  suffixIcon: Icons.remove_red_eye_outlined,
+                  isPasswordType: true,
                 ),
               ],
             ),
           )
         ],
       ),
-    );
-  }
-
-  TextFormField txtPassword({
-    String title,
-    IconData icon,
-    controller,
-    TextInputType keyboardType,
-    Color textColor,
-    Color hintColor,
-    Color iconColor,
-  }) {
-    void toggleObscureText() {
-      setState(() {
-        _obscureText = !_obscureText;
-      });
-    }
-
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      obscureText: _obscureText,
-      controller: controller,
-      style: TextStyle(color: textColor),
-      decoration: InputDecoration(
-        icon: Icon(
-          icon,
-          color: iconColor,
-        ),
-        border: const OutlineInputBorder(),
-        hintText: 'Password',
-        hintStyle: TextStyle(color: hintColor),
-        suffixIcon: IconButton(
-          icon: Icon(
-            Icons.remove_red_eye,
-            color: hintColor,
-          ),
-          onPressed: () {
-            toggleObscureText();
-          },
-        ),
-      ),
-      keyboardType: keyboardType,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Preencha o campo de senha.';
-        }
-        return null;
-      },
     );
   }
 
@@ -287,18 +240,18 @@ class _LoginPageState extends State<LoginPage> {
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.baseline,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Ainda não tem conta? ",
+            "Ainda não tem conta?",
             style: TextStyle(color: ThemeColor.secundaryColor),
           ),
           InkWell(
             child: Container(
-              // color: Colors.white70,
+              margin: EdgeInsets.only(left: 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: ThemeColor.primaryColor,
+                color: Colors.deepPurple,
               ),
               child: Padding(
                 padding:
