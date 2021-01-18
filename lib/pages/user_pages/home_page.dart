@@ -36,19 +36,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var tabs = [
-      Center(child: HorizontalListView()),
+      HorizontalListView(),
       Center(child: ProductsList()),
       Center(child: ProductForm()),
     ];
 
     return Scaffold(
       appBar: AppBar(
-        leading: Expanded(
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Icon(Icons.person)],
-            ),
+        leading: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.person),
+            ],
           ),
         ),
         title: Text(

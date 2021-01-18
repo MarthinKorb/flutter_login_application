@@ -9,6 +9,7 @@ class InputForm extends StatefulWidget {
   final Color hintColor;
   final Color iconColor;
   final IconData suffixIcon;
+  final String initialValue;
 
   final bool isPasswordType;
 
@@ -21,7 +22,8 @@ class InputForm extends StatefulWidget {
     this.hintColor,
     this.iconColor,
     this.suffixIcon,
-    this.isPasswordType,
+    this.isPasswordType = false,
+    this.initialValue,
   });
 
   @override
@@ -45,6 +47,7 @@ class _InputFormState extends State<InputForm> {
         iconColor: widget.iconColor,
         suffixIcon: widget.suffixIcon,
         isPasswordType: widget.isPasswordType,
+        initialValue: widget.initialValue,
       ),
     );
   }
@@ -65,13 +68,14 @@ class _InputFormState extends State<InputForm> {
     Color iconColor,
     IconData suffixIcon,
     bool isPasswordType = false,
+    String initialValue,
   }) {
     return !isPasswordType
         ? TextFormField(
             textInputAction: TextInputAction.next,
             controller: controller,
             style: TextStyle(color: textColor),
-            // obscureText: _obscureText,
+            initialValue: initialValue,
             decoration: InputDecoration(
               hintText: title,
               hintStyle: TextStyle(

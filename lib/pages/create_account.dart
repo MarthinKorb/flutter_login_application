@@ -15,7 +15,6 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  bool _obscureText = true;
 
   signUp(String name, String email, String password,
       String passwordConfirmation) async {

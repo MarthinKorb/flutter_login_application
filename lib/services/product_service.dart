@@ -25,6 +25,20 @@ class ProductService {
     return response;
   }
 
+  Future<http.Response> put(
+    String url,
+    dynamic body,
+    Map<String, String> headers,
+  ) async {
+    print(body);
+    var response = await http.put(
+      url,
+      body: body,
+      headers: headers,
+    );
+    return response;
+  }
+
   Future<http.Response> createProduct(
     String url,
     dynamic body,
@@ -41,5 +55,16 @@ class ProductService {
       Constants.HOST + '/products/$id',
       headers: headers,
     );
+  }
+
+  Future<http.Response> updateProduct(
+    String id,
+    dynamic body,
+    Map<String, String> headers,
+  ) async {
+    var response =
+        await this.put(Constants.HOST + '/products/$id', body, headers);
+
+    return response;
   }
 }
